@@ -1,13 +1,12 @@
 {
-  "name": "reg2pg",
+  "name": "reg2influx",
   "version": "1.0.0",
-  "description": "DEVICE.FARM registers to PostgreSQL pump",
-  "main": "reg2pg.js",
+  "description": "MQTT Registers to InfluxDB pump",
+  "main": "reg2influx.js",
   "dependencies": {
     "@device.farm/appglue": "^1.0.13",
     "@device.farm/mqtt-reg": "^1.0.18",
-    "fast-deep-equal": "^2.0.1",
-    "mqtt": "^2.18.8",
-    "pg": "^7.12.1"
+    "@influxdata/influxdb-client": "^1.22.0",
+    "fast-deep-equal": "^2.0.1"
   }
 }

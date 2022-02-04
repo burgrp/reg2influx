@@ -5,6 +5,6 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY config.json reg2pg.js ./
+COPY config.json reg2influx.js ./
 
-CMD node --inspect=0.0.0.0:9229 reg2pg.js
+CMD node --inspect=0.0.0.0:9229 reg2influx.js

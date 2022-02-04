@@ -1,12 +1,10 @@
 {
-    "siteId": "-> $SITE_ID",
     "mqtt": "-> $MQTT",
-    "intervalMs": 10000,
-    "pg": {
-        "user": "-> $PG_USER",
-        "password": "-> $PG_PASSWORD",
-        "host": "-> $PG_HOST",
-        "database": "-> $PG_DATABASE",
-        "port": "-> $PG_PORT"
+    "delaySec": 5,
+    "influx": {
+        "host": "-> $INFLUX_HOST",
+        "org": "-> $INFLUX_ORG",
+        "token": "-> $INFLUX_TOKEN",
+        "bucket": "-> $INFLUX_BUCKET_NAME"
     }
 }
