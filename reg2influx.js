@@ -39,6 +39,10 @@ require("@device.farm/appglue")({ require, file: __dirname + "/config.json" }).m
 
                     const point = new Point(name);
                     point.timestamp(timestamp);
+                    let tokens = name.split(".");
+                    for (let i in tokens) {
+                        point.tag("t" + (parseInt(i) + 1), tokens[i]);
+                    }
 
                     if (typeof value === "boolean") {
                         point.booleanField(VALUE_FIELD_NAME, value);
