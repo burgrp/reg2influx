@@ -1,6 +1,12 @@
 const mqttReg = require("@device.farm/mqtt-reg");
 const { InfluxDB, Point } = require("@influxdata/influxdb-client");
 
+const log = {
+    error: require("debug")("app:error"),
+    info: require("debug")("app:info"),
+    debug: require("debug")("app:debug")
+}
+
 const VALUE_FIELD_NAME = "value";
 
 require("@device.farm/appglue")({ require, file: __dirname + "/config.json" }).main(async ({
@@ -16,10 +22,13 @@ require("@device.farm/appglue")({ require, file: __dirname + "/config.json" }).m
 
     mqttReg.mqttAdvertise(mqtt, name => {
         if (!regs[name]) {
-            console.info("Adding register", name);
+            log.info("Adding register", name);
             regs[name] = mqttReg.mqttReg(mqtt, name, (value, prev, initial) => {
-                if (regs[name]) {
-                    regs[name].timestamp = new Date();
+                let reg = regs[name]; 
+                if (reg) {
+                    reg.timestamp = new Date();
+                    let value = reg.actual();
+                    reg.value = value;
                 }
             });
         }
@@ -29,13 +38,13 @@ require("@device.farm/appglue")({ require, file: __dirname + "/config.json" }).m
         try {
             await new Promise(resolve => setTimeout(resolve, delaySec * 1000));
             for (let name in regs) {
-                
+
                 let value = regs[name].actual();
                 let timestamp = regs[name].timestamp;
-                
+
                 if (value !== undefined && timestamp !== undefined) {
-                    
-                    //console.info(name, value, timestamp);
+
+                    log.debug(name, value, timestamp);
 
                     const point = new Point(name);
                     point.timestamp(timestamp);
@@ -58,11 +67,11 @@ require("@device.farm/appglue")({ require, file: __dirname + "/config.json" }).m
                 }
 
             }
-            
+
             await writeApi.flush();
 
         } catch (e) {
-            console.error("Error in the loop:", e);
+            log.error("Error in the loop:", e);
         }
     }
 
